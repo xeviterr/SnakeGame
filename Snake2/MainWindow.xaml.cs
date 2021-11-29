@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Snake2
 {
@@ -20,23 +21,37 @@ namespace Snake2
     /// </summary>
     public partial class MainWindow : Window
     {
+        SnakeGame jocSerp = new SnakeGame();
+        DispatcherTimer timer = new DispatcherTimer();
 
         public MainWindow()
         {
+            timer.Tick += Timer_Tick;
+            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Start();
             InitializeComponent();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            int tamanyXCasella = (int)(canvas.ActualWidth / SnakeGame.X_SIZE);
+            int tamanyYCasella = (int)(canvas.ActualHeight / SnakeGame.Y_SIZE);
+
+            //Redibuixar cada vegada.
+            Ellipse ellSerp = new Ellipse()
+            {
+                Fill = Brushes.Green,
+                Width = tamanyXCasella,
+                Height = tamanyYCasella,
+            };
+            canvas.Children.Add(ellSerp);
+            Canvas.SetTop(ellSerp, jocSerp.CapSerp.Y * tamanyYCasella );
+            Canvas.SetLeft(ellSerp, jocSerp.CapSerp.X * tamanyXCasella );
         }
 
         private void canvas_KeyDown(object sender, KeyEventArgs e)
         {
-            Ellipse ellSerp = new Ellipse()
-            {
-                Fill = Brushes.Green,
-                Width = 100,
-                Height = 100
-            };
-            canvas.Children.Add(ellSerp);
-            Canvas.SetTop(ellSerp, canvas.ActualHeight / 2);
-            Canvas.SetLeft(ellSerp, canvas.ActualWidth / 2);
+            jocSerp.moure();
         }
     }
 }
