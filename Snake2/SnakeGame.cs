@@ -21,14 +21,14 @@ namespace Snake2
         public const int Y_SIZE = 5;
 
         Point capSerp = new Point(0, 0);
-        DireccioSnake direccio = DireccioSnake.Avall;
+        DireccioSnake direccio = DireccioSnake.Dreta;
 
         public Point CapSerp { get => capSerp; set => capSerp = value; }
         public DireccioSnake Direccio { get => direccio; set => direccio = value; }
 
         internal void moure()
         {
-            capSerp.Y++;
+            capSerp.X++;
         }
     }
 }
